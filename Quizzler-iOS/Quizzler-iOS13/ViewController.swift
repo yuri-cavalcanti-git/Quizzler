@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var trueButton: UIButton!
     @IBOutlet weak var falseButton: UIButton!
     
+    
     let arrayQuiz = [
         Question(q: "A slug's blood is green.", a: "True"),
         Question(q: "Approximately one quarter of human bones are in the feet.", a: "True"),
@@ -41,10 +42,12 @@ class ViewController: UIViewController {
         let userAnswer = sender.currentTitle
         let actualAnswer = arrayQuiz[questionNumber].answer
         
+        
+        
         if userAnswer == actualAnswer {
-            print("Right!")
+            sender.backgroundColor = UIColor.green
         } else {
-            print("Wrong!")
+            sender.backgroundColor = UIColor.red
         }
         
         if questionNumber < arrayQuiz.count - 1 {
@@ -53,12 +56,19 @@ class ViewController: UIViewController {
             questionNumber = 0
         }
         
-        updateUI()
+        Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
+        
+        
     }
     
-    func updateUI() {
+    @objc func updateUI() {
         questionLabel.text = arrayQuiz[questionNumber].text
+        trueButton.backgroundColor = UIColor.clear
+        falseButton.backgroundColor = UIColor.clear
+        //Pra chamar no Timer, por causa do #selector, preciso colocar @objc
+        progressBar.progress = Float(questionNumber + 1) / Float(arrayQuiz.count)
     }
+    
+
 
 }
-
